@@ -10,7 +10,6 @@ namespace PerilInSpace
         public static string FILE_NAME = "config.json";
         //TODO DEFAULT SCREEN SIZE
 
-
         //SETTINGS MANAGEMENT
         public static int LOWERBOUND_VOLUME = 0;
         public static int UPPERBOUND_VOLUME = 10;
