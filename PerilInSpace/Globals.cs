@@ -29,6 +29,6 @@ namespace PerilInSpace
 
         //SETTINGS MENU INCREMENT
         public static int SETTINGS_INCREMENT = 100;
-        public static int TIME_LIMIT_INCREMENT = 15;
+        public static int TIME_LIMIT_INCREMENT = 5;
     }
 }
