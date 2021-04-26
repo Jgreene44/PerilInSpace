@@ -22,10 +22,13 @@ namespace PerilInSpace
         public static int UPPERBOUND_POINTS_PER_ASTEROID = 5000;
         public static int LOWERBOUND_POINTS_PER_ENEMY = 100;
         public static int UPPERBOUND_POINTS_PER_ENEMY = 5000;
+        public static int LOWERBOUND_POINT_DEDUCTION_IF_HIT = 100;
+        public static int UPPERBOUND_POINT_DEDUCTION_IF_HIT = 5000;
         public static int LOWERBOUND_TIME_LIMIT = 5;
         public static int UPPERBOUND_TIME_LIMIT = 60;
 
         //SETTINGS MENU INCREMENT
         public static int SETTINGS_INCREMENT = 100;
+        public static int TIME_LIMIT_INCREMENT = 15;
     }
 }

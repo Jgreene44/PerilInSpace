@@ -16,6 +16,7 @@ namespace PerilInSpace.Screens
         private readonly MenuEntry _numLivesMenuEntry;
         private readonly MenuEntry _pointsPerAsteroidMenuEntry;
         private readonly MenuEntry _pointsPerEnemyMenuEntry;
+        private readonly MenuEntry _pointsDeductionIfHit;
         private readonly MenuEntry _timeLimitMenuEntry;
         private readonly MenuEntry _hitboxesShownMenuEntry;
 
@@ -26,6 +27,7 @@ namespace PerilInSpace.Screens
             _numLivesMenuEntry = new MenuEntry(string.Empty);
             _pointsPerAsteroidMenuEntry = new MenuEntry(string.Empty);
             _pointsPerEnemyMenuEntry = new MenuEntry(string.Empty);
+            _pointsDeductionIfHit = new MenuEntry(string.Empty);
             _timeLimitMenuEntry = new MenuEntry(string.Empty);
             _hitboxesShownMenuEntry = new MenuEntry(string.Empty);
 
@@ -38,6 +40,7 @@ namespace PerilInSpace.Screens
             _numLivesMenuEntry.Selected += NumLivesMenuEntrySelected;
             _pointsPerAsteroidMenuEntry.Selected += PointsPerAsteroidMenuEntrySelected;
             _pointsPerEnemyMenuEntry.Selected += PointsPerEnemyMenuEntrySelected;
+            _pointsDeductionIfHit.Selected += PointsDeductionIfHitMenuEntrySelected;
             _timeLimitMenuEntry.Selected += TimeLimitMenuEntrySelected;
             _hitboxesShownMenuEntry.Selected += HitBoxesShownMenuEntrySelected;
             back.Selected += BackMenuEntrySelected;
@@ -49,9 +52,24 @@ namespace PerilInSpace.Screens
             MenuEntries.Add(_numLivesMenuEntry);
             MenuEntries.Add(_pointsPerAsteroidMenuEntry);
             MenuEntries.Add(_pointsPerEnemyMenuEntry);
+            MenuEntries.Add(_pointsDeductionIfHit);
             MenuEntries.Add(_timeLimitMenuEntry);
             MenuEntries.Add(_hitboxesShownMenuEntry);
             MenuEntries.Add(back);
+        }
+
+        private void PointsDeductionIfHitMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            if (_settings.pointDeductionIfHit >= Globals.UPPERBOUND_POINT_DEDUCTION_IF_HIT)
+            {
+                _settings.pointDeductionIfHit = Globals.LOWERBOUND_POINT_DEDUCTION_IF_HIT;
+            }
+            else
+            {
+                _settings.pointDeductionIfHit += Globals.SETTINGS_INCREMENT;
+            }
+
+            SetMenuEntryText();
         }
 
         private void BackMenuEntrySelected(object sender, PlayerIndexEventArgs e)
@@ -67,6 +85,7 @@ namespace PerilInSpace.Screens
             _numLivesMenuEntry.Text = $"Number of Lives ({Globals.LOWERBOUND_NUMBER_OF_LIVES} - {Globals.UPPERBOUND_NUMBER_OF_LIVES}): {_settings.numberOfLives.ToString()}";
             _pointsPerAsteroidMenuEntry.Text = $"Points Per Asteroid ({Globals.LOWERBOUND_POINTS_PER_ASTEROID} - {Globals.UPPERBOUND_POINTS_PER_ASTEROID}): {_settings.pointsPerAsteroid.ToString()}";
             _pointsPerEnemyMenuEntry.Text = $"Points Per Enemy ({Globals.LOWERBOUND_POINTS_PER_ENEMY} - {Globals.UPPERBOUND_POINTS_PER_ENEMY}): {_settings.pointsPerEnemy.ToString()}";
+            _pointsDeductionIfHit.Text = $"Points Deducted If Hit ({Globals.LOWERBOUND_POINT_DEDUCTION_IF_HIT} - {Globals.UPPERBOUND_POINT_DEDUCTION_IF_HIT}): {_settings.pointDeductionIfHit.ToString()}";
             _timeLimitMenuEntry.Text = $"Time Limit ({Globals.LOWERBOUND_TIME_LIMIT} - {Globals.UPPERBOUND_TIME_LIMIT}): {_settings.timeLimit.ToString()}";
             _hitboxesShownMenuEntry.Text = $"Show Hitboxes: {(_settings.hitboxesShown == 1 ? "On" : "Off")}";
         }
@@ -136,7 +155,7 @@ namespace PerilInSpace.Screens
             }
             else
             {
-                _settings.timeLimit++;
+                _settings.timeLimit += Globals.TIME_LIMIT_INCREMENT;
             }
             SetMenuEntryText();
         }

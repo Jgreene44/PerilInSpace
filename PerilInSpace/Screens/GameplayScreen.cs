@@ -187,7 +187,7 @@ namespace PerilInSpace.Screens
                                 asteroids.RemoveAt(j);
                                 j--;
                                 MakeOneAsteroid();
-                                score++;
+                                score += _settings.pointsPerAsteroid;
                             }
 
                         }
@@ -426,7 +426,7 @@ namespace PerilInSpace.Screens
 
                     asteroids.RemoveAt(i);
                     i--;
-                    score = score - 10;
+                    score -= _settings.pointDeductionIfHit;
                     MakeOneAsteroid();
                     _sprites[0].color = Color.Red;
 

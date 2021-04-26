@@ -14,6 +14,7 @@ namespace PerilInSpace
             NumberOfLives = 3,
             PointsPerAsteroid = 500,
             PointsPerEnemy = 1000,
+            PointDeductionIfHit = 1000,
             TimeLimit = 30,
             //0 = False, 1 = True
             HitboxesShown = 0
@@ -23,6 +24,7 @@ namespace PerilInSpace
         public int numberOfLives { get; set; }
         public int pointsPerAsteroid { get; set; }
         public int pointsPerEnemy { get; set; }
+        public int pointDeductionIfHit { get; set; }
         public int timeLimit { get; set; }
         public int hitboxesShown { get; set; }
 
@@ -33,6 +35,7 @@ namespace PerilInSpace
             numberOfLives = (int)DefaultSettings.NumberOfLives;
             pointsPerAsteroid = (int)DefaultSettings.PointsPerAsteroid;
             pointsPerEnemy = (int)DefaultSettings.PointsPerEnemy;
+            pointDeductionIfHit = (int)DefaultSettings.PointDeductionIfHit;
             timeLimit = (int)DefaultSettings.TimeLimit;
             hitboxesShown = (int)DefaultSettings.HitboxesShown;
         }
@@ -51,6 +54,7 @@ namespace PerilInSpace
             numberOfLives = temp.numberOfLives;
             pointsPerAsteroid = temp.pointsPerAsteroid;
             pointsPerEnemy = temp.pointsPerEnemy;
+            pointDeductionIfHit = temp.pointDeductionIfHit;
             timeLimit = temp.timeLimit;
             hitboxesShown = temp.hitboxesShown;
 

@@ -72,8 +72,6 @@ namespace PerilInSpace
                 
                 
                 firingLasersSound.Play((float)Volume/10, 0, 0);
-                //SoundEffect firingLasersSound;
-                //firingLasersSound = Content.Load<SoundEffect>("sfx_laser1");
 
             }
             this.shipBounds = new BoundingRectangle(Position, Width, Height);
