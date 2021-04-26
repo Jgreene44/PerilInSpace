@@ -12,8 +12,8 @@ namespace PerilInSpace.Screens
     public class ControlsScreen : GameScreen
     {
         ContentManager _content;
-        Texture2D _background;
-        TimeSpan _displayTime;
+        Texture2D _controlsScreen;
+        Texture2D _darkPurpleBackground;
 
         MouseState _currentMouse;
         MouseState _previousMouse;
@@ -23,8 +23,9 @@ namespace PerilInSpace.Screens
 
             if (_content == null) _content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            _background = _content.Load<Texture2D>("ControlScreen");
-            //_displayTime = TimeSpan.FromSeconds(2);
+            _controlsScreen = _content.Load<Texture2D>("ControlScreen");
+            _darkPurpleBackground = _content.Load<Texture2D>("Backgrounds/darkPurple");
+            
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -34,9 +35,6 @@ namespace PerilInSpace.Screens
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
 
-            //_displayTime -= gameTime.ElapsedGameTime;
-            //if (_displayTime <= TimeSpan.Zero) ExitScreen();
-
             if (_currentMouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton != ButtonState.Pressed)
             {
                 ExitScreen();
@@ -45,8 +43,10 @@ namespace PerilInSpace.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.SpriteBatch.Begin();
-            ScreenManager.SpriteBatch.Draw(_background, new Rectangle(80,0, 632, 480), Color.White);
+            ScreenManager.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
+            Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
+            ScreenManager.SpriteBatch.Draw(_darkPurpleBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
+            ScreenManager.SpriteBatch.Draw(_controlsScreen, new Rectangle(80, 0, 632, 480), Color.White);
             ScreenManager.SpriteBatch.End();
         }
     }

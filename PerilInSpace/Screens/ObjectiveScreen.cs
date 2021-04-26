@@ -12,8 +12,8 @@ namespace PerilInSpace.Screens
     public class ObjectiveScreen : GameScreen
     {
         ContentManager _content;
-        Texture2D _background;
-        TimeSpan _displayTime;
+        Texture2D _objectiveScreenTexture;
+        Texture2D _darkPurpleBackground;
 
         MouseState _currentMouse;
         MouseState _previousMouse;
@@ -25,8 +25,8 @@ namespace PerilInSpace.Screens
 
             if (_content == null) _content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            _background = _content.Load<Texture2D>("ObjectiveScreen");
-            //_displayTime = TimeSpan.FromSeconds(2);
+            _objectiveScreenTexture = _content.Load<Texture2D>("ObjectiveScreen");
+            _darkPurpleBackground = _content.Load<Texture2D>("Backgrounds/darkPurple");
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -45,8 +45,11 @@ namespace PerilInSpace.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.SpriteBatch.Begin();
-            ScreenManager.SpriteBatch.Draw(_background, new Rectangle(80,0, 632, 480), Color.White);
+
+            ScreenManager.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
+            Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
+            ScreenManager.SpriteBatch.Draw(_darkPurpleBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
+            ScreenManager.SpriteBatch.Draw(_objectiveScreenTexture, new Rectangle(80, 0, 632, 480), Color.White);
             ScreenManager.SpriteBatch.End();
         }
     }
