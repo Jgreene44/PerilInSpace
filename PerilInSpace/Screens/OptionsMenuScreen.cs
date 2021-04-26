@@ -31,7 +31,11 @@ namespace PerilInSpace.Screens
             _timeLimitMenuEntry = new MenuEntry(string.Empty);
             _hitboxesShownMenuEntry = new MenuEntry(string.Empty);
 
-            _settings.LoadFile();
+            if (_settings.CheckFileExists())
+            {
+                _settings.LoadFile();
+            }
+            
             SetMenuEntryText();
 
             var back = new MenuEntry("Back");

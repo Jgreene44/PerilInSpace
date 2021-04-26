@@ -31,7 +31,6 @@ namespace PerilInSpace.Screens
         {
             if (_content == null)
                 _content = new ContentManager(ScreenManager.Game.Services, "Content");
-
             _backgroundTexture = _content.Load<Texture2D>("Backgrounds/blue");
         }
 
