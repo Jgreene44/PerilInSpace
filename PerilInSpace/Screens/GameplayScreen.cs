@@ -44,11 +44,12 @@ namespace PerilInSpace.Screens
 
         //VARIABLES
         public bool resetFlag = false;
-        public bool running = true;
-        public static bool controlsScreen = false;
-        public bool objectiveScreen = false;
+        public bool running = false;
+
         public MouseState _currentMouse;
         public MouseState _previousMouse;
+
+        private KeyboardState _keyboardState;
         public bool previousCollision;
         public bool currentCollision;
         private List<Sprite> _sprites;
@@ -56,6 +57,8 @@ namespace PerilInSpace.Screens
         public float distance;
         public int score = 0;
         public DateTime targetTime;
+        private bool isMainScreen = false;
+        private bool buffer = true;
 
 
         //PARTICLE SYSTEMS
@@ -108,8 +111,6 @@ namespace PerilInSpace.Screens
             _blueGameBackground = _content.Load<Texture2D>("Backgrounds/blue");
             _purpleGameBackground = _content.Load<Texture2D>("Backgrounds/purple");
             _darkPurpleBackground = _content.Load<Texture2D>("Backgrounds/darkPurple");
-
-            startGame();
         }
 
 
@@ -129,73 +130,91 @@ namespace PerilInSpace.Screens
         {
             base.Update(gameTime, otherScreenHasFocus, false);
 
+
             DateTime currentTime = DateTime.Now;
-            KeyboardState keyboardState = Keyboard.GetState();
+            _keyboardState = Keyboard.GetState();
 
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();
 
 
 
-            if (currentTime.TimeOfDay > targetTime.TimeOfDay)
+            if (!isMainScreen)
             {
-                running = false;
-            }
-
-            //Checking to See if the game has passed its time
-            if (running)
-            {
-
-                //Exits the game if escape is pressed
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    ExitScreen();
-
-                UpdateAsteroids();
-
-                foreach (var sprite in _sprites.ToArray())
-                {
-                    sprite.Update(gameTime, _sprites);
-                }
-
-                for (int i = 0; i < _sprites.Count; i++)
+                if (_keyboardState.IsKeyDown(Keys.Space))
                 {
 
-                    for (int j = 0; j < asteroids.Count; j++)
-                    {
-                        if (i > 0 && CollisionHelper.Collides(_sprites[i].bounds, asteroids[j].bounds))
-                        {
-                            _explosions.PlaceExplosion(asteroids[j].Position);
-                            _sprites.RemoveAt(i);
-                            i--;
-                            asteroids.RemoveAt(j);
-                            j--;
-                            MakeOneAsteroid();
-                            score++;
-                        }
-
-                    }
-                    if (_sprites[i].IsRemoved)
-                    {
-                        _sprites.RemoveAt(i);
-                        i--;
-                    }
-                }
-            }
-            if (!running)
-            {
-                if ((int)gameTime.TotalGameTime.TotalSeconds % 3 == 0)
-                {
-                    var width = ScreenManager.GraphicsDevice.Viewport.Width * 0.90;
-                    var height = ScreenManager.GraphicsDevice.Viewport.Height * 0.90;
-                    _fireworks.PlaceFirework(new Vector2(RandomHelper.Next(50, (int)width), RandomHelper.Next(50, (int)height)));
-                    _fireworks.PlaceFirework(new Vector2(RandomHelper.Next(50, (int)width), RandomHelper.Next(50, (int)height)));
-                }
-                if (keyboardState.IsKeyDown(Keys.R))
-                {
+                    isMainScreen = true;
                     running = true;
+
                     startGame();
                 }
+                buffer = false;
             }
+
+            if (isMainScreen)
+            {
+                if (currentTime.TimeOfDay > targetTime.TimeOfDay)
+                {
+                    running = false;
+                }
+
+                //Checking to See if the game has passed its time
+                if (running)
+                {
+
+                    //Exits the game if escape is pressed
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        ExitScreen();
+
+                    UpdateAsteroids();
+
+                    foreach (var sprite in _sprites.ToArray())
+                    {
+                        sprite.Update(gameTime, _sprites);
+                    }
+
+                    for (int i = 0; i < _sprites.Count; i++)
+                    {
+
+                        for (int j = 0; j < asteroids.Count; j++)
+                        {
+                            if (i > 0 && CollisionHelper.Collides(_sprites[i].bounds, asteroids[j].bounds))
+                            {
+                                _explosions.PlaceExplosion(asteroids[j].Position);
+                                _sprites.RemoveAt(i);
+                                i--;
+                                asteroids.RemoveAt(j);
+                                j--;
+                                MakeOneAsteroid();
+                                score++;
+                            }
+
+                        }
+                        if (_sprites[i].IsRemoved)
+                        {
+                            _sprites.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+                if (!running)
+                {
+                    if ((int)gameTime.TotalGameTime.TotalSeconds % 3 == 0)
+                    {
+                        var width = ScreenManager.GraphicsDevice.Viewport.Width * 0.90;
+                        var height = ScreenManager.GraphicsDevice.Viewport.Height * 0.90;
+                        _fireworks.PlaceFirework(new Vector2(RandomHelper.Next(50, (int)width), RandomHelper.Next(50, (int)height)));
+                        _fireworks.PlaceFirework(new Vector2(RandomHelper.Next(50, (int)width), RandomHelper.Next(50, (int)height)));
+                    }
+                    if (_keyboardState.IsKeyDown(Keys.R))
+                    {
+                        running = true;
+                        startGame();
+                    }
+                }
+            }
+
             
         }
 
@@ -219,54 +238,67 @@ namespace PerilInSpace.Screens
             //backgroundSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointWrap, null, null, null, null);
             //backgroundSpriteBatch.Begin();
 
-            if (_sprites != null)
+
+            if (!isMainScreen)
             {
-                transform = Matrix.CreateTranslation((_sprites[0].Position.X) * 0.333f, (_sprites[0].Position.Y) * 0.333f, 0);
-                spriteBatch.Begin(transformMatrix: transform, samplerState: SamplerState.PointWrap);
-                spriteBatch.Draw(parallaxBG, new Rectangle(-1000, -1000, 3000, 3000), Color.White);
-                spriteBatch.End();
-            }
-
-
-
-            if (running)
-            {
-
-
-                //THIS SPRITE BATCH BEGIN/END DRAWS THE BACKGROUND AND TEXT
-                spriteBatch.Begin(samplerState: SamplerState.PointWrap);
+                ScreenManager.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
                 Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
-                spriteBatch.Draw(_blueGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
-                double showTime = (targetTime - DateTime.Now).TotalSeconds;
-                spriteBatch.DrawString(font, "Score: " + score, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                spriteBatch.DrawString(font, "Time Remaining: " + showTime.ToString("#.00"), new Vector2(5, 25), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                spriteBatch.End();
-
-                //THIS SPRITE BATCH BEGIN/END DRAWS THE SPRITES
-                spriteBatch.Begin();
-                foreach (Sprite a in asteroids)
-                {
-                    spriteBatch.Draw(a._texture, a.Position, null, Color.White, a._rotation, new Vector2(a.Width / 2, a.Height / 2), (float)0.5f, SpriteEffects.None, 1.0f);
-
-                }
-
-                foreach (var sprite in _sprites)
-                {
-                    sprite.Draw(spriteBatch);
-                }
-
-                spriteBatch.End();
+                ScreenManager.SpriteBatch.Draw(_darkPurpleBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
+                spriteBatch.DrawString(font, "Press Space to Start", new Vector2(100, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
+                ScreenManager.SpriteBatch.End();
             }
-            if (!running)
+
+
+            if (isMainScreen)
             {
-                spriteBatch.Begin();
-                var viewport = ScreenManager.GraphicsDevice.Viewport;
-                Rectangle source = new Rectangle(0, 0, viewport.Width, viewport.Height);
-                spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(230, 150), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
-                spriteBatch.DrawString(font, "Press R to restart game", new Vector2(200, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
-                spriteBatch.Draw(_purpleGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0.01f);
-                spriteBatch.End();
+                if (_sprites != null)
+                {
+                    transform = Matrix.CreateTranslation((_sprites[0].Position.X) * 0.10f, (_sprites[0].Position.Y) * 0.10f, 0);
+                    spriteBatch.Begin(transformMatrix: transform, samplerState: SamplerState.PointWrap);
+                    spriteBatch.Draw(parallaxBG, new Rectangle(-1000, -1000, 3000, 3000), Color.White);
+                    spriteBatch.End();
+                }
+
+                if (running)
+                {
+                    //THIS SPRITE BATCH BEGIN/END DRAWS THE BACKGROUND AND TEXT
+                    spriteBatch.Begin(samplerState: SamplerState.PointWrap);
+                    Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
+                    //spriteBatch.Draw(_blueGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
+                    double showTime = (targetTime - DateTime.Now).TotalSeconds;
+                    spriteBatch.DrawString(font, "Score: " + score, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                    spriteBatch.DrawString(font, "Time Remaining: " + showTime.ToString("#.00"), new Vector2(5, 25), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                    spriteBatch.End();
+
+                    //THIS SPRITE BATCH BEGIN/END DRAWS THE SPRITES
+                    spriteBatch.Begin();
+                    foreach (Sprite a in asteroids)
+                    {
+                        spriteBatch.Draw(a._texture, a.Position, null, Color.White, a._rotation, new Vector2(a.Width / 2, a.Height / 2), (float)0.5f, SpriteEffects.None, 1.0f);
+
+                    }
+
+                    foreach (var sprite in _sprites)
+                    {
+                        sprite.Draw(spriteBatch);
+                    }
+
+                    spriteBatch.End();
+                }
+                if (!running)
+                {
+                    spriteBatch.Begin();
+                    var viewport = ScreenManager.GraphicsDevice.Viewport;
+                    Rectangle source = new Rectangle(0, 0, viewport.Width, viewport.Height);
+                    spriteBatch.Draw(_purpleGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0.01f);
+                    spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(230, 150), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(font, "Press R to restart game", new Vector2(200, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
+
+                    spriteBatch.End();
+                }
             }
+
+
         }
 
         public void startGame()
@@ -295,11 +327,11 @@ namespace PerilInSpace.Screens
                     _content.Load<Texture2D>("asteroid" + i.ToString()));
             asteroids.Clear();
             InitializeAsteroids();
-            running = true;
+            //running = true;
             score = 0;
 
             //Grab the target time
-            targetTime = DateTime.Now.AddSeconds(30);
+            targetTime = DateTime.Now.AddSeconds(_settings.timeLimit);
 
             //Set the background music
 
@@ -307,9 +339,6 @@ namespace PerilInSpace.Screens
             MediaPlayer.Play(backgroundMusic);
 
             _explosions.Visible = true;
-
-
-
         }
 
         private void MakeOneAsteroid()

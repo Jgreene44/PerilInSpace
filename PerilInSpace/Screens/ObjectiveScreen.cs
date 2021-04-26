@@ -38,6 +38,7 @@ namespace PerilInSpace.Screens
 
             if (_currentMouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton != ButtonState.Pressed && !buffer)
             {
+                
                 ExitScreen();
             }
             buffer = false;

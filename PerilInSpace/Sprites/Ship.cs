@@ -41,14 +41,15 @@ namespace PerilInSpace
 
             int movementScale = 3;
 
-            if (_currentKey.IsKeyDown(Keys.Up) || _currentKey.IsKeyDown(Keys.W)) Position += new Vector2(0, -movementScale);
-            if (_currentKey.IsKeyDown(Keys.Down) || _currentKey.IsKeyDown(Keys.S)) Position += new Vector2(0, movementScale);
-            if (_currentKey.IsKeyDown(Keys.Left) || _currentKey.IsKeyDown(Keys.A))
+            
+            if (_currentKey.IsKeyDown(Keys.Up) || _currentKey.IsKeyDown(Keys.W) && (Position.Y >= 0)) Position += new Vector2(0, -movementScale);      
+            if (_currentKey.IsKeyDown(Keys.Down) || _currentKey.IsKeyDown(Keys.S) && Position.Y <= Globals.SCREEN_HEIGHT) Position += new Vector2(0, movementScale);
+            if (_currentKey.IsKeyDown(Keys.Left) || _currentKey.IsKeyDown(Keys.A) && Position.X >= 0)
             {
                 Position += new Vector2(-movementScale, 0);
                 //flipped = true;
             };
-            if (_currentKey.IsKeyDown(Keys.Right) || _currentKey.IsKeyDown(Keys.D))
+            if (_currentKey.IsKeyDown(Keys.Right) || _currentKey.IsKeyDown(Keys.D) && Position.X <= Globals.SCREEN_WIDTH)
             {
                 Position += new Vector2(movementScale, 0);
                 //flipped = false;

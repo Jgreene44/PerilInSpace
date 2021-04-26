@@ -74,7 +74,7 @@ namespace PerilInSpace.Screens
 
         private void VolumeMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if(_settings.volume == Globals.UPPERBOUND_VOLUME)
+            if(_settings.volume >= Globals.UPPERBOUND_VOLUME)
             {
                 _settings.volume = Globals.LOWERBOUND_VOLUME;
             }
@@ -88,7 +88,7 @@ namespace PerilInSpace.Screens
 
         private void NumLivesMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if (_settings.numberOfLives == Globals.UPPERBOUND_NUMBER_OF_LIVES)
+            if (_settings.numberOfLives >= Globals.UPPERBOUND_NUMBER_OF_LIVES)
             {
                 _settings.numberOfLives = Globals.LOWERBOUND_NUMBER_OF_LIVES;
             }
@@ -102,7 +102,7 @@ namespace PerilInSpace.Screens
 
         private void PointsPerAsteroidMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if (_settings.pointsPerAsteroid == Globals.UPPERBOUND_POINTS_PER_ASTEROID)
+            if (_settings.pointsPerAsteroid >= Globals.UPPERBOUND_POINTS_PER_ASTEROID)
             {
                 _settings.pointsPerAsteroid = Globals.LOWERBOUND_POINTS_PER_ASTEROID;
             }
@@ -116,7 +116,7 @@ namespace PerilInSpace.Screens
 
         private void PointsPerEnemyMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if (_settings.pointsPerEnemy == Globals.UPPERBOUND_POINTS_PER_ENEMY)
+            if (_settings.pointsPerEnemy >= Globals.UPPERBOUND_POINTS_PER_ENEMY)
             {
                 _settings.pointsPerEnemy = Globals.LOWERBOUND_POINTS_PER_ENEMY;
             }
@@ -130,7 +130,7 @@ namespace PerilInSpace.Screens
 
         private void TimeLimitMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if (_settings.timeLimit == Globals.UPPERBOUND_TIME_LIMIT)
+            if (_settings.timeLimit >= Globals.UPPERBOUND_TIME_LIMIT)
             {
                 _settings.timeLimit = Globals.LOWERBOUND_TIME_LIMIT;
             }
@@ -142,7 +142,7 @@ namespace PerilInSpace.Screens
         }
         private void HitBoxesShownMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            if (_settings.hitboxesShown == 1)
+            if (_settings.hitboxesShown >= 1)
             {
                 _settings.hitboxesShown = 0;
             }

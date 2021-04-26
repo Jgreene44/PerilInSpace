@@ -8,7 +8,10 @@ namespace PerilInSpace
     {
         //ENVIRONMENT MANAGEMENT
         public static string FILE_NAME = "config.json";
-        //TODO DEFAULT SCREEN SIZE
+
+        //SCREEN SIZE
+        public static int SCREEN_WIDTH = 800;
+        public static int SCREEN_HEIGHT = 480;
 
         //SETTINGS MANAGEMENT
         public static int LOWERBOUND_VOLUME = 0;
