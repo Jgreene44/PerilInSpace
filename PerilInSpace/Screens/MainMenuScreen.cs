@@ -13,6 +13,13 @@ namespace PerilInSpace.Screens
             var playGameMenuEntry = new MenuEntry("Play Game");
             var optionsMenuEntry = new MenuEntry("Options");
             var exitMenuEntry = new MenuEntry("Exit");
+            
+            Settings _settings = new Settings();
+
+            if (!_settings.CheckFileExists())
+            {
+                _settings.SaveFile();
+            }
 
            
 
