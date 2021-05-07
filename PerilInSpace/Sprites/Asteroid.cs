@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PerilInSpace.Collisions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,8 @@ namespace PerilInSpace.Sprites
     {
         private Texture2D _texture;
 
-        
-        private Rectangle _asteroidBounds = new Rectangle(0, 0, 130, 53);
+
+        private BoundingCircle _asteroidBounds;
 
         
         private Vector2 _position;

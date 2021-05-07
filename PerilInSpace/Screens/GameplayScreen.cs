@@ -277,7 +277,6 @@ namespace PerilInSpace.Screens
                     foreach (Sprite a in asteroids)
                     {
                         spriteBatch.Draw(a._texture, a.Position, null, Color.White, a._rotation, new Vector2(a.Width / 2, a.Height / 2), (float)0.5f, SpriteEffects.None, 1.0f);
-
                     }
 
                     foreach (var sprite in _sprites)

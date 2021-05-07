@@ -83,6 +83,7 @@ namespace PerilInSpace
             Vector2 direction = new Vector2(Mouse.GetState().X, Mouse.GetState().Y) - Position;
             float rotation = (float)Math.Atan2(direction.Y, direction.X);
             spriteBatch.Draw(_texture, Position, null, color, (float)(rotation + (Math.PI * 0.5f)), new Vector2(50, 38), (float)0.5f, SpriteEffects.None, 1);
+
         }
     }
 
