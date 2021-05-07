@@ -74,7 +74,7 @@ namespace PerilInSpace
                 firingLasersSound.Play((float)Volume/10, 0, 0);
 
             }
-            this.shipBounds = new BoundingRectangle(Position, Width, Height);
+            this.shipBounds = new BoundingRectangle(Position, 99, 75);
 
         }
         public override void Draw(SpriteBatch spriteBatch)

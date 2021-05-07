@@ -244,7 +244,9 @@ namespace PerilInSpace.Screens
                 ScreenManager.SpriteBatch.Begin(samplerState: SamplerState.PointWrap);
                 Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
                 ScreenManager.SpriteBatch.Draw(_darkPurpleBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
-                spriteBatch.DrawString(font, "Press Space to Start", new Vector2(100, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
+                int stringHeight = 24;
+                int stringWidth = 220;
+                spriteBatch.DrawString(font, "Press Space to Start", new Vector2(Globals.SCREEN_WIDTH / 2 - stringWidth, Globals.SCREEN_HEIGHT / 2 - stringHeight), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
                 ScreenManager.SpriteBatch.End();
             }
 
@@ -291,8 +293,8 @@ namespace PerilInSpace.Screens
                     var viewport = ScreenManager.GraphicsDevice.Viewport;
                     Rectangle source = new Rectangle(0, 0, viewport.Width, viewport.Height);
                     spriteBatch.Draw(_purpleGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0.01f);
-                    spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(230, 150), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
-                    spriteBatch.DrawString(font, "Press R to restart game", new Vector2(200, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(Globals.SCREEN_WIDTH / 2 - 285, 150), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(font, "Press R to restart game", new Vector2(Globals.SCREEN_WIDTH / 2 - 246, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
 
                     spriteBatch.End();
                 }
