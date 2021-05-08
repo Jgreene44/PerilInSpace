@@ -65,7 +65,11 @@ namespace PerilInSpace
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            Color myColor = new Color();
+            myColor.R = 58;
+            myColor.G = 46;
+            myColor.B = 63;
+            GraphicsDevice.Clear(myColor);
 
             // TODO: Add your drawing code here
 

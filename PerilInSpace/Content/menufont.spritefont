@@ -3,7 +3,7 @@
 	<Asset Type="Graphics:FontDescription">
 		<FontName>kenvector_future</FontName>
 		<Size>20</Size>
-		<Spacing>2</Spacing>
+		<Spacing>5</Spacing>
 		<Style>Regular</Style>
 		<CharacterRegions>
 			<CharacterRegion>

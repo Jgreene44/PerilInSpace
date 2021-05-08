@@ -51,6 +51,7 @@ namespace PerilInSpace.Screens
         //VARIABLES
         public bool resetFlag = false;
         public bool running = false;
+        public bool scoreCheck = true;
 
         public MouseState _currentMouse;
         public MouseState _previousMouse;
@@ -63,6 +64,7 @@ namespace PerilInSpace.Screens
         List<Asteroid> asteroidList = new List<Asteroid>();
         public float distance;
         public int score = 0;
+        public int highscore = 0;
         public DateTime targetTime;
         private bool isMainScreen = false;
         private bool buffer = true;
@@ -94,9 +96,6 @@ namespace PerilInSpace.Screens
             }
 
             _settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(Globals.FILE_NAME));
-
-
-            
 
             //CREATE PARTICLE SYSTEMS AND GAME BACKGROUND
             //_rain = new RainParticleSystem(_game, new Rectangle(0, -20, ScreenManager.GraphicsDevice.Viewport.Width, 10));
@@ -224,6 +223,7 @@ namespace PerilInSpace.Screens
                     if (_keyboardState.IsKeyDown(Keys.R))
                     {
                         running = true;
+                        scoreCheck = true;
                         startGame();
                     }
                 }
@@ -271,7 +271,8 @@ namespace PerilInSpace.Screens
                     Rectangle source = new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height);
                     double showTime = (targetTime - DateTime.Now).TotalSeconds;
                     spriteBatch.DrawString(font, "Score: " + score, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                    spriteBatch.DrawString(font, "Time Remaining: " + showTime.ToString("#.00"), new Vector2(5, 25), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                    spriteBatch.DrawString(font, "High Score: " + highscore, new Vector2(5, 28), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                    spriteBatch.DrawString(font, "Time Remaining: " + showTime.ToString("#.00"), new Vector2(5, 50), Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
                     spriteBatch.End();
 
                     //THIS SPRITE BATCH BEGIN/END DRAWS THE SPRITES
@@ -290,13 +291,19 @@ namespace PerilInSpace.Screens
                 }
                 if (!running)
                 {
+                    if (score > highscore && scoreCheck)
+                    {
+                        highscore = score;
+                        scoreCheck = false;
+                    }
                     spriteBatch.Begin();
                     var viewport = ScreenManager.GraphicsDevice.Viewport;
                     Rectangle source = new Rectangle(0, 0, viewport.Width, viewport.Height);
                     spriteBatch.Draw(_purpleGameBackground, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 3.0f, SpriteEffects.None, 0.01f);
-                    spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(Globals.SCREEN_WIDTH / 2 - endGamefont.MeasureString("Score: " + score.ToString()).X, 150), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
-                    spriteBatch.DrawString(font, "Press R to restart game", new Vector2(Globals.SCREEN_WIDTH / 2 - 246, 250), Color.White, 0, new Vector2(0, 0), 3.0f, SpriteEffects.None, 0f);
-
+                    spriteBatch.DrawString(endGamefont, "Score: " + score, new Vector2(Globals.SCREEN_WIDTH / 2 - endGamefont.MeasureString("Score: " + score.ToString()).X, 75), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(endGamefont, "High Score: " + highscore, new Vector2(Globals.SCREEN_WIDTH / 2 - endGamefont.MeasureString("High Score: " + highscore.ToString()).X, 175), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(font, "Press R to restart game", new Vector2(Globals.SCREEN_WIDTH / 2 - font.MeasureString("Press R to restart game").X, 350), Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 0f);
+                    
                     spriteBatch.End();
                 }
             }
